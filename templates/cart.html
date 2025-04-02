@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Order</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Your Order</h1>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('products') }}">Products</a>
+        </nav>
+    </header>
+
+    <section id="order-summary">
+        {% if order %}
+            <h2>Order ID: #{{ order.order_id }}</h2>
+            <p><strong>Total Price:</strong> ${{ order.total_price }}</p>
+            <p><strong>Order Date:</strong> {{ order.order_date }}</p>
+            <p><strong>Status:</strong> {{ order.status }}</p>
+        {% else %}
+            <p>You have no recent orders!</p>
+        {% endif %}
+    </section>
+
+    <a href="{{ url_for('checkout') }}">Proceed to Checkout</a>
+</body>
+</html>

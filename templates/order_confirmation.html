@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>🎉 Order Confirmed! 🎉</h1>
+        <nav>
+            <a href="{{ url_for('home') }}">🏠 Home</a>
+            <a href="{{ url_for('products') }}">🛒 Products</a>
+            <a href="{{ url_for('cart') }}">🛍️ Orders</a>
+        </nav>
+    </header>
+
+    <section class="order-confirmation">
+        <h2>Thank you for your purchase! 🛍️</h2>
+        <p>Your order ID is: <strong>#{{ order_id }}</strong></p>
+        <p>We are processing your order and will update you soon.</p>
+
+        <a href="{{ url_for('products') }}" class="btn">Continue Shopping 🛒</a>
+    </section>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

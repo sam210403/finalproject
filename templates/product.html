@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product[1] }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>{{ product[1] }}</h1>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('products') }}">Products</a>
+            <a href="{{ url_for('cart') }}">Cart (<span id="cart-count">0</span>)</a>
+        </nav>
+    </header>
+
+    <section id="product-details">
+        <img src="{{ product[8] }}" alt="{{ product[1] }}" width="300">
+        <p>{{ product[3] }}</p>
+        <p>Price: ${{ product[2] }}</p>
+        <button onclick="addToCart({{ product[0] }})">Add to Cart</button>
+    </section>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

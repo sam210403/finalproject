@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location-Based Products</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Recommended Products</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="product.html">Products</a>
+            <a href="cart.html">Cart</a>
+        </nav>
+    </header>
+    <section>
+        <h2>Products Based on Your Location</h2>
+        <div id="location-products"></div>
+    </section>
+    <script>
+        function fetchLocationBasedProducts() {
+            navigator.geolocation.getCurrentPosition((position) => {
+                fetch(`/get_products_by_location?lat=${position.coords.latitude}&lng=${position.coords.longitude}`)
+                .then(response => response.json())
+                .then(data => {
+                    let container = document.getElementById('location-products');
+                    container.innerHTML = data.map(product => `<p>${product.name} - $${product.price}</p>`).join('');
+                });
+            });
+        }
+        fetchLocationBasedProducts();
+    </script>
+</body>
+</html>

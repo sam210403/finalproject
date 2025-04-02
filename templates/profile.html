@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>User Profile</h1>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </header>
+
+    <section id="user-info">
+        <h2>{{ user.username }}</h2>
+        <p>Email: {{ user.email }}</p>
+        <a href="{{ url_for('edit_profile') }}">Edit Profile</a>
+    </section>
+
+    <section id="order-history">
+        <h2>Order History</h2>
+        {% if orders %}
+            <ul>
+                {% for order in orders %}
+                    <li>Order #{{ order.id }} - {{ order.status }} - {{ order.order_date }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No orders found.</p>
+        {% endif %}
+    </section>
+
+    <section id="addresses">
+        <h2>Saved Addresses</h2>
+        {% if addresses %}
+            <ul>
+                {% for address in addresses %}
+                    <li>{{ address.address_line }}, {{ address.city }}, {{ address.zipcode }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No addresses saved.</p>
+        {% endif %}
+    </section>
+
+    <section id="wishlist">
+        <h2>Wishlist</h2>
+        {% if wishlist %}
+            <ul>
+                {% for product in wishlist %}
+                    <li>
+                        <img src="{{ product.picture }}" alt="{{ product.pName }}" width="50">
+                        {{ product.pName }} - ${{ product.price }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Your wishlist is empty.</p>
+        {% endif %}
+    </section>
+</body>
+</html>
