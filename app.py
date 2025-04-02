@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
-import mysql.connector
+from pymysql import connections
 from werkzeug.security import generate_password_hash, check_password_hash
 import openai
 import os
@@ -10,11 +10,11 @@ app.secret_key = 'your_secret_key'
 
 # 📌 Database Connection Function
 def get_db_connection():
-    return mysql.connector.connect(
-        host='localhost',
-        user='root',
-        password='password',
-        database='ecommerce_db',
+    return connections.Connection(
+        host='ecommerce-db.cpq0omwwugu1.ap-south-1.rds.amazonaws.com',
+        user='admim',
+        password='ecommerce123',
+        database='ecommerce-db',
         connection_timeout=300
     )
 
