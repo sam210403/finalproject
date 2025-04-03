@@ -13,7 +13,7 @@ db_conn = connections.Connection(
         host='ecommerce-db.cpq0omwwugu1.ap-south-1.rds.amazonaws.com',
         user='admim',
         password='ecommerce123',
-        database='ecommerce-db',
+        database='ecommerce_db',
 
 
 )
