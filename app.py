@@ -14,7 +14,6 @@ db_conn = connections.Connection(
         user='admim',
         password='ecommerce123',
         database='ecommerce-db',
-        connection_timeout=300
 
 
 )
