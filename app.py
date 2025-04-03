@@ -9,14 +9,15 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 # 📌 Database Connection Function
-def get_db_connection():
-    return connections.Connection(
+db_conn = connections.Connection(
         host='ecommerce-db.cpq0omwwugu1.ap-south-1.rds.amazonaws.com',
         user='admim',
         password='ecommerce123',
         database='ecommerce-db',
         connection_timeout=300
-    )
+
+
+)
 
 # 📌 Home Route - Display Recommended Products
 @app.route('/')
@@ -25,8 +26,9 @@ def home():
     if 'user_id' in session:
         location = request.args.get('location', None)  # Only fetch if user is logged in
 
-    conn = get_db_connection()
+    conn = db_conn
     cursor = conn.cursor()
+
 
     if location:
         cursor.execute("SELECT * FROM products WHERE location = %s ORDER BY RAND() LIMIT 6", (location,))
@@ -50,8 +52,9 @@ def signup():
         password = request.form['password']
         hashed_password = generate_password_hash(password)
 
-        conn = get_db_connection()
+        conn = db_conn
         cursor = conn.cursor()
+
 
         # Check if email already exists in users table
         cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
@@ -90,8 +93,9 @@ def login():
             session['admin'] = True
             return redirect(url_for('admin_dashboard'))  
 
-        conn = get_db_connection()
+        conn = db_conn
         cursor = conn.cursor()
+
         cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
         user = cursor.fetchone()
         cursor.close()
@@ -118,8 +122,9 @@ def logout():
 @app.route('/products')
 def products():
     location = request.args.get('location', 'default')  # Get location from query params
-    conn = get_db_connection()
+    conn = db_conn
     cursor = conn.cursor()
+
 
     if location == 'default':
         cursor.execute("SELECT * FROM products")  # Show all products by default
@@ -136,8 +141,9 @@ def products():
 # 📌 Single Product Page
 @app.route('/product/<int:product_id>')
 def product(product_id):
-    conn = get_db_connection()
+    conn = db_conn
     cursor = conn.cursor()
+
     cursor.execute("SELECT * FROM products WHERE id = %s", (product_id,))
     product = cursor.fetchone()
     cursor.close()
@@ -156,8 +162,9 @@ def add_to_cart(product_id):
 
     user_id = session['user_id']
 
-    conn = get_db_connection()
+    conn = db_conn
     cursor = conn.cursor()
+
 
     # Check if product exists before adding
     cursor.execute("SELECT * FROM products WHERE id = %s", (product_id,))
@@ -209,8 +216,9 @@ def cart_count():
     if 'user_id' not in session:
         return jsonify({"count": 0})
 
-    conn = get_db_connection()
+    conn = db_conn
     cursor = conn.cursor()
+
     cursor.execute("SELECT COUNT(*) FROM cart WHERE user_id = %s", (session['user_id'],))
     count = cursor.fetchone()[0]
 
@@ -227,7 +235,7 @@ def cart():
     user_id = session.get("user_id")  # Check if user is logged in
     if not user_id:
         return redirect("/login")
-    conn = get_db_connection()
+    conn = db_conn
     
     
     cursor = conn.cursor(dictionary=True)
@@ -254,8 +262,9 @@ def checkout():
     user_id = session['user_id']
     print("DEBUG: User ID in session ->", user_id)  # ✅ Debugging
 
-    conn = get_db_connection()
+    conn = db_conn
     cursor = conn.cursor()
+
 
     # ✅ Check if user exists
     cursor.execute("SELECT id FROM users WHERE id = %s", (user_id,))
@@ -313,8 +322,9 @@ def admin_dashboard():
     if 'admin' not in session:
         return redirect(url_for('login'))
 
-    conn = get_db_connection()
+    conn = db_conn
     cursor = conn.cursor()
+
     cursor.execute("SELECT * FROM products")
     products = cursor.fetchall()
 
@@ -331,8 +341,9 @@ def delete_product(product_id):
     if 'admin' not in session:
         return redirect(url_for('login'))
 
-    conn = get_db_connection()
+    conn = db_conn
     cursor = conn.cursor()
+
     cursor.execute("DELETE FROM products WHERE id = %s", (product_id,))
     conn.commit()
     cursor.close()
@@ -342,8 +353,9 @@ def delete_product(product_id):
 # 📌 Edit Product (Admin)
 @app.route('/edit_product/<int:product_id>', methods=['GET', 'POST'])
 def edit_product(product_id):
-    conn = get_db_connection()
+    conn = db_conn
     cursor = conn.cursor()
+
 
     if request.method == 'POST':
         pName = request.form['pName']
@@ -380,8 +392,9 @@ def update_order_status(order_id):
 
     if request.method == 'POST':
         new_status = request.form['status']
-        conn = get_db_connection()
+        conn = db_conn
         cursor = conn.cursor()
+
         cursor.execute("UPDATE orders SET status = %s WHERE id = %s", (new_status, order_id))
         conn.commit()
         cursor.close()
@@ -396,8 +409,9 @@ def profile():
         return redirect(url_for('login'))
 
     user_id = session['user_id']
-    conn = get_db_connection()
+    conn = db_conn
     cursor = conn.cursor()
+
 
     # ✅ Fetch user details
     cursor.execute("SELECT username, email FROM users WHERE id = %s", (user_id,))
@@ -445,7 +459,7 @@ def edit_profile():
         return redirect(url_for('login'))
 
     user_id = session['user_id']
-    conn = get_db_connection()
+    conn = db_conn
     cursor = conn.cursor(dictionary=True)
 
     if request.method == 'POST':
