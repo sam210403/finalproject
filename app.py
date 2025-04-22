@@ -11,7 +11,7 @@ app.secret_key = 'your_secret_key'
 # 📌 Database Connection Function
 def get_db_connection():
     return mysql.connector.connect(
-        host='3.110.55.58',
+        host='ecommerce-db.cpq0omwwugu1.ap-south-1.rds.amazonaws.com',
         user='admin',
         password='ecommerce123',
         database='ecommerce_db',
