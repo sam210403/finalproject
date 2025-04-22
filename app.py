@@ -12,8 +12,8 @@ app.secret_key = 'your_secret_key'
 def get_db_connection():
     return mysql.connector.connect(
         host='3.110.55.58',
-        user='root',
-        password='password123',
+        user='admin',
+        password='ecommerce123',
         database='ecommerce_db',
         auth_plugin="mysql_native_password",
         connection_timeout=300
