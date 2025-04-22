@@ -12,7 +12,7 @@ app.secret_key = 'your_secret_key'
 def get_db_connection():
     return mysql.connector.connect(
         host='ecommerce-db.cpq0omwwugu1.ap-south-1.rds.amazonaws.com',
-        user='admin',
+        user='admim',
         password='ecommerce123',
         database='ecommerce_db',
         auth_plugin="mysql_native_password",
